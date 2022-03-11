@@ -65,3 +65,10 @@ To use the `.env` file don't forget to source it using command:
 source .env
 ```
 
+### Step 3: Bonus
+
+Use the following command to cross compile this code for Raspberry Pi:
+
+```bash
+GOOS=linux GOARCH=arm GOARM=7 CGO_ENABLED=0 go build -ldflags '-w -s -extldflags "-static"' .
+```
