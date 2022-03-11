@@ -1,6 +1,7 @@
 package main
 
 import (
+	_ "embed"
 	"log"
 	"time"
 
@@ -11,9 +12,14 @@ import (
 var (
 	notif             Notifier
 	internetAvailable = false
+	nsDomain          string
+	nsPort            string
+	//go:embed VERSION
+	version string
 )
 
 func main() {
+	log.Printf("Starting Internet Outages Monitor [v%s]\n", version)
 	notif = &notifier.Slack{}
 	err := notif.Register()
 	if err != nil {
@@ -27,7 +33,8 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
+	nsDomain = env.Read(env.ENVNCDOMAIN)
+	nsPort = env.Read(env.ENVNCPORT)
 	for range time.Tick(interval) {
 		internetAvailable, err = checkInternetStatus()
 		if err != nil {

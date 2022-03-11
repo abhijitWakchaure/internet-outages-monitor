@@ -9,11 +9,6 @@ import (
 	"github.com/abhijitWakchaure/internet-outages-monitor/env"
 )
 
-var (
-	nsDomain = env.Read(env.ENVNCDOMAIN)
-	nsPort   = env.Read(env.ENVNCPORT)
-)
-
 func checkInternetStatus() (bool, error) {
 	// nc -dzw1 domain.com 443
 	if nsDomain == "" || nsPort == "" {
