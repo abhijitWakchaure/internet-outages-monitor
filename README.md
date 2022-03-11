@@ -26,13 +26,13 @@ In the event of disconnection the program should notify using a notifier (for no
 1. Export the webhook URL as `SLACK_WEBHOOK_URL` using command:
 
     ```bash
-    export SLACK_WEBHOOK_URL=https://hooks.slack.com/services/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
+    export SLACK_WEBHOOK_URL=<your slack webhook URL>
     ```
 
 1. To test if your slack app is working correctly you can use the following command to send `Hello, World!` message to your channel:
 
     ```bash
-    curl -X POST -H 'Content-type: application/json' --data '{"text":"Hello, World!"}' https://hooks.slack.com/services/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
+    curl -X POST -H 'Content-type: application/json' --data '{"text":"Hello, World!"}' <your slack webhook URL>
     ```
 
     You should see the `ok` as output and your slack channel should receive the `Hello, World!` message.
@@ -43,7 +43,7 @@ This program uses the following env variables. Set them according to your needs.
 
 | Variable Name | Required | Example Value(s) | Summary |
 |--|--|--|--
-| SLACK_WEBHOOK_URL | Yes | `https://hooks.slack.com/services/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` | The webhook URL for your slack app from `Step 1`
+| SLACK_WEBHOOK_URL | Yes | `<your slack webhook URL>` | The webhook URL for your slack app from `Step 1`
 | NC_DOMAIN | Yes | `google.com` | Domain you want to use to check internet connection
 | NC_PORT | Yes | `443` | Port you want to use for netcat
 | SLACK_NOTIFY_ON_REGISTER | No | `false` or `true` | If true you will get a message `Slack Notifier registered` everytime the program starts
