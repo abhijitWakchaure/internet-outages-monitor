@@ -19,6 +19,7 @@ func checkInternetStatus() (bool, error) {
 	if nsDomain == "" || nsPort == "" {
 		return false, fmt.Errorf("%s and %s must be set", env.ENVNCDOMAIN, env.ENVNCPORT)
 	}
+	// Source: https://stackoverflow.com/a/10385867/7432786
 	cmd := exec.Command("nc", "-d", "-z", "-w1", nsDomain, nsPort)
 
 	err := cmd.Start()
