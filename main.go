@@ -10,10 +10,11 @@ import (
 )
 
 var (
-	notif             Notifier
-	internetAvailable = false
-	nsDomain          string
-	nsPort            string
+	notif                  Notifier
+	internetAvailable      = false
+	interval, tickInterval time.Duration
+	nsDomain               string
+	nsPort                 string
 	//go:embed VERSION
 	version string
 )
@@ -29,13 +30,15 @@ func main() {
 	// if err != nil {
 	// 	panic(err)
 	// }
-	interval, err := time.ParseDuration(env.Read(env.ENVTICKINTERVAL))
+	tickInterval, err = time.ParseDuration(env.Read(env.ENVTICKINTERVAL))
 	if err != nil {
 		panic(err)
 	}
+	interval = tickInterval
 	nsDomain = env.Read(env.ENVNCDOMAIN)
 	nsPort = env.Read(env.ENVNCPORT)
-	for range time.Tick(interval) {
+	log.Printf("Tick interval set to: %s\n", tickInterval)
+	for {
 		internetAvailable, err = checkInternetStatus()
 		if err != nil {
 			log.Printf("failed to check internet status due to %v\n", err)
@@ -47,6 +50,6 @@ func main() {
 		} else {
 			recordEvent(InternetConnected)
 		}
+		time.Sleep(interval)
 	}
-
 }
