@@ -29,7 +29,7 @@ func recordEvent(event Event) {
 			notif.Notify(msg)
 			// internet is back, restore the original tick interval
 			interval = tickInterval
-			log.Printf("Restoring tick interval to %s\n", interval)
+			log.Printf("Internet is back, restoring tick interval to %s\n", interval)
 		}
 		lastStatus = true
 	case InternetDisconnected:
@@ -37,7 +37,7 @@ func recordEvent(event Event) {
 			startTime = time.Now()
 			// internet is disconnected, let's check status more frequently
 			interval = time.Second * 3
-			log.Printf("Setting tick interval to %s\n", interval)
+			log.Printf("Internet disconnected, setting tick interval to %s\n", interval)
 		}
 		lastStatus = false
 	}
