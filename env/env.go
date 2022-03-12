@@ -22,6 +22,8 @@ var defaults map[string]string = map[string]string{
 	"TIMEZONE":                 "Asia/Kolkata",
 	"TICK_INTERVAL":            "30s",
 	"SLACK_NOTIFY_ON_REGISTER": "true",
+	"NC_DOMAIN":                "google.com",
+	"NC_PORT":                  "443",
 }
 
 // Read ...
