@@ -7,6 +7,14 @@ Simple internet outages monitor in golang with slack notification on reconnectio
 Run the program in background (daemon) and monitor the internet connection status after set interval.
 In the event of disconnection the program should notify using a notifier (for now it supports slack only, PR's welcome)
 
+## Prerequisites
+
+This program depends on the nc (or netcat) utility. Most of the OS today have this utility pre-installed, but just to be sure you can check this by running following command:
+
+```bash
+nc -dzw1 google.com 443
+```
+
 ## Installation
 
 ### Step 1: Create Slack App
@@ -41,13 +49,13 @@ In the event of disconnection the program should notify using a notifier (for no
 
 This program uses the following env variables. Set them according to your needs.
 
-| Variable Name | Required | Example Value(s) | Summary |
+| Variable Name | Required | Default Value | Summary |
 |--|--|--|--
-| SLACK_WEBHOOK_URL | Yes | `<your slack webhook URL>` | The webhook URL for your slack app from `Step 1`
-| NC_DOMAIN | Yes | `google.com` | Domain you want to use to check internet connection
-| NC_PORT | Yes | `443` | Port you want to use for netcat
-| SLACK_NOTIFY_ON_REGISTER | No | `false` or `true` | If true you will get a message `Slack Notifier registered` everytime the program starts
-| TICK_INTERVAL | No | `30s` or `1m` or `5m` | Interval between two internet checks
+| SLACK_WEBHOOK_URL | Yes | N/A | The webhook URL for your slack app from `Step 1`
+| NC_DOMAIN | No | `google.com` | Domain you want to use to check internet connection
+| NC_PORT | No | `443` | Port you want to use for netcat
+| SLACK_NOTIFY_ON_REGISTER | No | `true` | If true you will get a message `Slack Notifier registered` everytime the program starts
+| TICK_INTERVAL | No | `30s` | Interval between two internet checks. e.g. `15s`, `1m` etc
 
 If you prefer using `.env` files instead of exporting individual variable, here is a sample `.env` file:
 
@@ -55,8 +63,8 @@ If you prefer using `.env` files instead of exporting individual variable, here 
 TICK_INTERVAL=30s
 NC_DOMAIN=google.com
 NC_PORT=443
-SLACK_NOTIFY_ON_REGISTER=false
-SLACK_WEBHOOK_URL=https://hooks.slack.com/services/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
+SLACK_NOTIFY_ON_REGISTER=true
+SLACK_WEBHOOK_URL=<your slack webhook URL>
 ```
 
 To use the `.env` file don't forget to source it using command:
@@ -65,10 +73,10 @@ To use the `.env` file don't forget to source it using command:
 source .env
 ```
 
-### Step 3: Bonus
+### Step 3: Run the program
 
-Use the following command to cross compile this code for Raspberry Pi:
+You can run the program by downloading the binary from [latest release](https://github.com/abhijitWakchaure/internet-outages-monitor/releases/latest) or if you have [Go (golang)](https://go.dev/) installed you can directly [download](https://github.com/abhijitWakchaure/internet-outages-monitor/archive/refs/heads/master.zip) the source code and run using following command:
 
 ```bash
-GOOS=linux GOARCH=arm GOARM=7 CGO_ENABLED=0 go build -ldflags '-w -s -extldflags "-static"' .
+go run .
 ```
