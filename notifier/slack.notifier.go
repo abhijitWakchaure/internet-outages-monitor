@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/abhijitWakchaure/internet-outages-monitor/env"
@@ -31,7 +32,11 @@ func (s *Slack) Register() error {
 	if !notifyOnRegister {
 		return nil
 	}
-	err = s.sendMessage("Slack Notifier registered")
+	hostname, err := os.Hostname()
+	if err != nil && hostname == "" {
+		hostname = "unknown"
+	}
+	err = s.sendMessage("Slack Notifier registered on host: " + hostname)
 	if err != nil {
 		return err
 	}
