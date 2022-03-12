@@ -24,7 +24,7 @@ func main() {
 	notif = &notifier.Slack{}
 	err := notif.Register()
 	if err != nil {
-		panic(err)
+		log.Printf("Error registering notifier: %s. I'll not be able to send notifications\n", err)
 	}
 	// err = notifier.Notify("Hello")
 	// if err != nil {
