@@ -5,15 +5,10 @@ import (
 	"log"
 	"os/exec"
 	"syscall"
-
-	"github.com/abhijitWakchaure/internet-outages-monitor/env"
 )
 
 func checkInternetStatus() (bool, error) {
 	// nc -dzw1 domain.com 443
-	if nsDomain == "" || nsPort == "" {
-		return false, fmt.Errorf("%s and %s must be set", env.ENVNCDOMAIN, env.ENVNCPORT)
-	}
 	// Source: https://stackoverflow.com/a/10385867/7432786
 	cmd := exec.Command("nc", "-d", "-z", "-w1", nsDomain, nsPort)
 
