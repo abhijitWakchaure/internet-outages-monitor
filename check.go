@@ -4,14 +4,25 @@ import (
 	"fmt"
 	"log"
 	"os/exec"
+	"runtime"
 	"syscall"
 )
 
 func checkInternetStatus() (bool, error) {
 	// nc -dzw1 domain.com 443
-	// Source: https://stackoverflow.com/a/10385867/7432786
-	cmd := exec.Command("nc", "-d", "-z", "-w1", nsDomain, nsPort)
 
+	var cmd *exec.Cmd
+	switch runtime.GOOS {
+	case "windows":
+		cmd = exec.Command("ping", "-n", "1", "-w", "1000", nsDomain)
+	default:
+		cmd = exec.Command("nc", "-d", "-z", "-w1", nsDomain, nsPort)
+	}
+	return execCmd(cmd)
+}
+
+func execCmd(cmd *exec.Cmd) (bool, error) {
+	// Source: https://stackoverflow.com/a/10385867/7432786
 	err := cmd.Start()
 	if err != nil {
 		log.Fatalf("cmd.Start: %v", err)

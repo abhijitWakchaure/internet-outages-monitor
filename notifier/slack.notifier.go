@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"time"
@@ -20,9 +21,14 @@ type Slack struct {
 // Register registers a Slack Notifier
 func (s *Slack) Register() error {
 	var err error
-	s.loc, err = time.LoadLocation(env.Read(env.ENVTIMEZONE))
+	timezone := env.Read(env.ENVTIMEZONE)
+	if timezone == "" {
+		timezone = "Local"
+	}
+	s.loc, err = time.LoadLocation(timezone)
 	if err != nil {
-		return err
+		log.Printf("Error loading timezone: %s\n", err)
+		return fmt.Errorf("Error loading timezone: %s", err)
 	}
 	s.webhookURL = env.Read(env.ENVSLACKWEBHOOKURL)
 	if s.webhookURL == "" {
@@ -68,6 +74,9 @@ func (s *Slack) sendMessage(message string) error {
 }
 
 func (s *Slack) getTimeString() string {
+	if s.loc == nil {
+		s.loc = time.Local
+	}
 	now := time.Now().In(s.loc)
 	// Layout      = "01/02 03:04:05PM '06 -0700" // The reference time, in numerical order.
 	// ANSIC       = "Mon Jan _2 15:04:05 2006"
