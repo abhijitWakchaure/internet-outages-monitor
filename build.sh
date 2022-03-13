@@ -5,6 +5,7 @@ APP_NAME="internet-outages-monitor"
 OUTFILE_LINUX="${APP_NAME}-v${VERSION}-linux_amd64"
 OUTFILE_ARM="${APP_NAME}-v${VERSION}-linux_arm32"
 OUTFILE_WINDOWS="${APP_NAME}-v${VERSION}-windows_amd64.exe"
+OUTFILE_DARWIN="${APP_NAME}-v${VERSION}-darwin_amd64"
 
 echo "Deleting old builds..."
 rm -rf ./dist
@@ -21,3 +22,5 @@ GOOS=linux GOARCH=arm GOARM=7 go build -o "dist/${OUTFILE_ARM}" -ldflags '-w -s 
 echo "Building for windows..."
 GOOS=windows GOARCH=amd64 go build -o "dist/${OUTFILE_WINDOWS}" -ldflags '-w -s -extldflags "-static"' .
 
+echo "Building for darwin..."
+GOOS=darwin GOARCH=amd64 go build -o "dist/${OUTFILE_DARWIN}" -ldflags '-w -s -extldflags "-static"' .
