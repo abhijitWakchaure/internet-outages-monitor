@@ -19,7 +19,7 @@ type Slack struct {
 }
 
 // Register registers a Slack Notifier
-func (s *Slack) Register() error {
+func (s *Slack) Register(version string) error {
 	var err error
 	timezone := env.Read(env.ENVTIMEZONE)
 	if timezone == "" {
@@ -42,7 +42,8 @@ func (s *Slack) Register() error {
 	if err != nil && hostname == "" {
 		hostname = "unknown"
 	}
-	err = s.sendMessage("Slack Notifier registered on host: " + hostname)
+	msg := fmt.Sprintf("Slack Notifier v%s registered on host: %s", version, hostname)
+	err = s.sendMessage(msg)
 	if err != nil {
 		return err
 	}

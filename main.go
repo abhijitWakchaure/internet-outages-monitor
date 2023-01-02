@@ -23,7 +23,7 @@ var (
 func main() {
 	log.Printf("Starting Internet Outages Monitor [v%s]\n", version)
 	notif = &notifier.Slack{}
-	err := notif.Register()
+	err := notif.Register(version)
 	if err != nil {
 		log.Printf("Error registering notifier: %s. I'll not be able to send notifications\n", err)
 	}
