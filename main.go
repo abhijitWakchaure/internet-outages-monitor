@@ -7,6 +7,7 @@ import (
 
 	"github.com/abhijitWakchaure/internet-outages-monitor/env"
 	"github.com/abhijitWakchaure/internet-outages-monitor/notifier"
+	"github.com/abhijitWakchaure/internet-outages-monitor/storage"
 )
 
 var (
@@ -26,10 +27,7 @@ func main() {
 	if err != nil {
 		log.Printf("Error registering notifier: %s. I'll not be able to send notifications\n", err)
 	}
-	// err = notifier.Notify("Hello")
-	// if err != nil {
-	// 	panic(err)
-	// }
+	storage.Init()
 	tickInterval, err = time.ParseDuration(env.Read(env.ENVTICKINTERVAL))
 	if err != nil {
 		panic(err)
